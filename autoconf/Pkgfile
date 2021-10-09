@@ -1,0 +1,23 @@
+# Description	: programs for producing shell scripts that can automatically configure source code
+# URL			:         
+# Maintainer	: Tanio, tan at ibislinux dot or dot id
+# Depends on	: 
+
+
+name=autoconf
+version=2.71
+release=1
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
+
+
+build() {
+
+	cd $name-$version
+
+	./configure --prefix=/usr
+  
+	make
+	make DESTDIR=$PKG install
+
+  
+}
