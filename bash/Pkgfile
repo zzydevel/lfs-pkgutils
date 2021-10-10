@@ -1,0 +1,32 @@
+# Description	: the Bourne-Again SHell
+# URL			:         
+# Maintainer	: Tanio, tan at ibislinux dot or dot id
+# Depends on	: ncurses readline
+
+
+name=bash
+version=5.1
+release=1
+source=(http://ftp.gnu.org/gnu/$name/name-$version.tar.gz)
+
+
+build() {
+
+	cd $name-$version
+
+	#fix a race condition if using multiple cores
+	sed -i  '/^bashline.o:.*shmbchar.h/a bashline.o: ${DEFDIR}/builtext.h' Makefile.in
+
+	./configure --prefix=/usr                    \
+            	--without-bash-malloc            \
+            	--with-installed-readline		 \
+            	--disable-nls
+  
+	make
+	make DESTDIR=$PKG install
+
+	mkdir -p $PKG/bin
+ 	mv -vf $PKG/usr/bin/bash $PKG/bin
+ 	ln -s bash $PKG/bin/sh
+ 
+}
